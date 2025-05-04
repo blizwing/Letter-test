@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Private Letter</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background: #f4f4f9;
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+    }
+    #letter {
+      display: none;
+      background: white;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    #codeForm {
+      text-align: center;
+      margin-top: 100px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+    }
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="codeForm">
+    <h2>Enter Access Code</h2>
+    <input type="text" id="codeInput" placeholder="Enter code" />
+    <button onclick="checkCode()">Submit</button>
+    <p id="errorMsg" style="color:red;"></p>
+  </div>
+
+  <div id="letter">
+    <h1>Dear Friend,</h1>
+    <p>I hope this letter finds you in good health and high spirits. It's been a while since we last caught up, and I just wanted to check in to see how you're doing.</p>
+    <p>Life has been moving fast on my end, but I often think about the good times we've shared. Let me know how things are going with you — work, family, life, everything.</p>
+    <p>Looking forward to hearing from you soon. Take care and stay safe.</p>
+    <p>Warm regards,<br/>Pratham</p>
+  </div>
+
+  <script>
+    async function checkCode() {
+      const input = document.getElementById("codeInput").value;
+      const error = document.getElementById("errorMsg");
+
+      try {
+        const res = await fetch("code.json");
+        const data = await res.json();
+
+        if (input === data.access_code) {
+          document.getElementById("codeForm").style.display = "none";
+          document.getElementById("letter").style.display = "block";
+        } else {
+          error.textContent = "Incorrect code. Try again.";
+        }
+      } catch (err) {
+        error.textContent = "Unable to validate code.";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
